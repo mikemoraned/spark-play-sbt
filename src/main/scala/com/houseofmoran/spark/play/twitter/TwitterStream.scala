@@ -6,6 +6,7 @@ import scala.collection.JavaConversions._
 
 import org.apache.spark._
 import org.apache.spark.streaming._
+import StreamingContext._
 import org.apache.spark.streaming.twitter._
 
 object TwitterStream {
@@ -22,9 +23,10 @@ object TwitterStream {
 
     val twitterStream = TwitterUtils.createStream(ssc, None)
 
-    val bieberStream = twitterStream.filter(status => status.getText().contains("bieber"))
+    val wordStream = twitterStream.flatMap(status => status.getText().split(" ").map((_, 1)))
+    val wordCountStream = wordStream.reduceByKey(_ + _)
 
-    bieberStream.print()
+    wordCountStream.print()
 
     ssc.start()
     ssc.awaitTermination()
