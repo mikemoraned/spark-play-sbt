@@ -20,7 +20,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="SBT: org.scala-lang:scala-library:2.11.4:jar" level="project" />
     <orderEntry type="library" name="SBT: aopalliance:aopalliance:1.0:jar" level="project" />
     <orderEntry type="library" name="SBT: asm:asm:3.2:jar" level="project" />
     <orderEntry type="library" name="SBT: com.clearspring.analytics:stream:2.7.0:jar" level="project" />
@@ -96,6 +95,8 @@
     <orderEntry type="library" name="SBT: org.apache.spark:spark-core_2.11:1.2.0:jar" level="project" />
     <orderEntry type="library" name="SBT: org.apache.spark:spark-network-common_2.11:1.2.0:jar" level="project" />
     <orderEntry type="library" name="SBT: org.apache.spark:spark-network-shuffle_2.11:1.2.0:jar" level="project" />
+    <orderEntry type="library" name="SBT: org.apache.spark:spark-streaming-twitter_2.11:1.2.0:jar" level="project" />
+    <orderEntry type="library" name="SBT: org.apache.spark:spark-streaming_2.11:1.2.0:jar" level="project" />
     <orderEntry type="library" name="SBT: org.apache.zookeeper:zookeeper:3.4.5:jar" level="project" />
     <orderEntry type="library" name="SBT: org.codehaus.jackson:jackson-core-asl:1.8.8:jar" level="project" />
     <orderEntry type="library" name="SBT: org.codehaus.jackson:jackson-jaxrs:1.8.8:jar" level="project" />
@@ -121,9 +122,11 @@
     <orderEntry type="library" name="SBT: org.json4s:json4s-core_2.11:3.2.10:jar" level="project" />
     <orderEntry type="library" name="SBT: org.json4s:json4s-jackson_2.11:3.2.10:jar" level="project" />
     <orderEntry type="library" name="SBT: org.mortbay.jetty:jetty-util:6.1.26:jar" level="project" />
+    <orderEntry type="library" name="SBT: org.mortbay.jetty:servlet-api:3.0.20100224:jar" level="project" />
     <orderEntry type="library" name="SBT: org.objenesis:objenesis:1.2:jar" level="project" />
     <orderEntry type="library" name="SBT: org.roaringbitmap:RoaringBitmap:0.4.5:jar" level="project" />
     <orderEntry type="library" name="SBT: org.scala-lang:scala-compiler:2.11.0:jar" level="project" />
+    <orderEntry type="library" name="SBT: org.scala-lang:scala-library:2.11.4:jar" level="project" />
     <orderEntry type="library" name="SBT: org.scala-lang:scala-reflect:2.11.0:jar" level="project" />
     <orderEntry type="library" name="SBT: org.scala-lang:scalap:2.11.0:jar" level="project" />
     <orderEntry type="library" name="SBT: org.scala-lang.modules:scala-parser-combinators_2.11:1.0.1:jar" level="project" />
@@ -142,30 +145,11 @@
     <orderEntry type="library" name="SBT: org.tachyonproject:tachyon:0.5.0:jar" level="project" />
     <orderEntry type="library" name="SBT: org.tachyonproject:tachyon-client:0.5.0:jar" level="project" />
     <orderEntry type="library" name="SBT: org.tukaani:xz:1.0:jar" level="project" />
+    <orderEntry type="library" name="SBT: org.twitter4j:twitter4j-core:3.0.3:jar" level="project" />
+    <orderEntry type="library" name="SBT: org.twitter4j:twitter4j-stream:3.0.3:jar" level="project" />
     <orderEntry type="library" name="SBT: org.uncommons.maths:uncommons-maths:1.2.2a:jar" level="project" />
     <orderEntry type="library" name="SBT: org.xerial.snappy:snappy-java:1.1.1.6:jar" level="project" />
     <orderEntry type="library" name="SBT: stax:stax-api:1.0.1:jar" level="project" />
     <orderEntry type="library" name="SBT: xmlenc:xmlenc:0.52:jar" level="project" />
-    <orderEntry type="library" name="SBT: com.twitter:chill_2.10:0.5.0:jar" level="project" />
-    <orderEntry type="library" name="SBT: org.apache.spark:spark-core_2.10:1.2.0:jar" level="project" />
-    <orderEntry type="library" name="SBT: org.apache.spark:spark-network-common_2.10:1.2.0:jar" level="project" />
-    <orderEntry type="library" name="SBT: org.apache.spark:spark-network-shuffle_2.10:1.2.0:jar" level="project" />
-    <orderEntry type="library" name="SBT: org.json4s:json4s-ast_2.10:3.2.10:jar" level="project" />
-    <orderEntry type="library" name="SBT: org.json4s:json4s-core_2.10:3.2.10:jar" level="project" />
-    <orderEntry type="library" name="SBT: org.json4s:json4s-jackson_2.10:3.2.10:jar" level="project" />
-    <orderEntry type="library" name="SBT: org.scala-lang:scala-compiler:2.10.0:jar" level="project" />
-    <orderEntry type="library" name="SBT: org.scala-lang:scala-library:2.10.4:jar" level="project" />
-    <orderEntry type="library" name="SBT: org.scala-lang:scala-reflect:2.10.0:jar" level="project" />
-    <orderEntry type="library" name="SBT: org.scala-lang:scalap:2.10.0:jar" level="project" />
-    <orderEntry type="library" name="SBT: org.spark-project.akka:akka-actor_2.10:2.3.4-spark:jar" level="project" />
-    <orderEntry type="library" name="SBT: org.spark-project.akka:akka-remote_2.10:2.3.4-spark:jar" level="project" />
-    <orderEntry type="library" name="SBT: org.spark-project.akka:akka-slf4j_2.10:2.3.4-spark:jar" level="project" />
-    <orderEntry type="library" name="SBT: org.apache.spark:spark-streaming_2.10:1.2.0:jar" level="project" />
-    <orderEntry type="library" name="SBT: org.mortbay.jetty:servlet-api:3.0.20100224:jar" level="project" />
-    <orderEntry type="library" name="SBT: org.apache.spark:spark-streaming_2.11:1.2.0:jar" level="project" />
-    <orderEntry type="library" name="SBT: org.apache.spark:spark-streaming-twitter_2.11:1.2.0:jar" level="project" />
-    <orderEntry type="library" name="SBT: org.twitter4j:twitter4j-core:3.0.3:jar" level="project" />
-    <orderEntry type="library" name="SBT: org.twitter4j:twitter4j-stream:3.0.3:jar" level="project" />
-    <orderEntry type="library" name="scala-sdk-2.11.4" level="application" />
   </component>
 </module>
