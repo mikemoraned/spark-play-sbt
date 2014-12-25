@@ -24,11 +24,11 @@ object TwitterStream {
 
     val twitterStream = TwitterUtils.createStream(ssc, None)
 
-    val wordStream = twitterStream.flatMap(status => status.getText().split(" ").map((_, 1)))
+    val wordStream = twitterStream.flatMap(status => status.getText().split(" "))
     val wordCountStream = wordStream.countByValueAndWindow(Seconds(60), Seconds(60))
 
     wordCountStream.foreachRDD( wordCountRDD => {
-        for(wordGroup <- wordCountRDD.groupBy{ case (word, count) => count }.sortBy(_._1)) {
+        for(wordGroup <- wordCountRDD.groupBy{ case (word, count) => count }.sortBy(_._1, false)) {
           val count = wordGroup._1
           val words = wordGroup._2.map(_._1).mkString(", ")
           System.out.println(s"$count: $words")
