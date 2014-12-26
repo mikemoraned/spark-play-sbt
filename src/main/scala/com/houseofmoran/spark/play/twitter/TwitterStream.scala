@@ -35,6 +35,8 @@ object TwitterStream {
         }
     });
 
+    wordCountStream.saveAsTextFiles("dump", "_words")
+
     ssc.start()
     ssc.awaitTermination()
   }
