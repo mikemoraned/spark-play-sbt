@@ -151,5 +151,24 @@
     <orderEntry type="library" name="SBT: org.xerial.snappy:snappy-java:1.1.1.6:jar" level="project" />
     <orderEntry type="library" name="SBT: stax:stax-api:1.0.1:jar" level="project" />
     <orderEntry type="library" name="SBT: xmlenc:xmlenc:0.52:jar" level="project" />
+    <orderEntry type="library" name="SBT: com.twitter:parquet-column:1.6.0rc3:jar" level="project" />
+    <orderEntry type="library" name="SBT: com.twitter:parquet-common:1.6.0rc3:jar" level="project" />
+    <orderEntry type="library" name="SBT: com.twitter:parquet-encoding:1.6.0rc3:jar" level="project" />
+    <orderEntry type="library" name="SBT: com.twitter:parquet-format:2.2.0-rc1:jar" level="project" />
+    <orderEntry type="library" name="SBT: com.twitter:parquet-generator:1.6.0rc3:jar" level="project" />
+    <orderEntry type="library" name="SBT: com.twitter:parquet-hadoop:1.6.0rc3:jar" level="project" />
+    <orderEntry type="library" name="SBT: com.twitter:parquet-jackson:1.6.0rc3:jar" level="project" />
+    <orderEntry type="library" name="SBT: commons-codec:commons-codec:1.5:jar" level="project" />
+    <orderEntry type="library" name="SBT: org.apache.spark:spark-catalyst_2.11:1.2.0:jar" level="project" />
+    <orderEntry type="library" name="SBT: org.apache.spark:spark-sql_2.11:1.2.0:jar" level="project" />
+    <orderEntry type="library" name="SBT: org.codehaus.jackson:jackson-core-asl:1.9.11:jar" level="project" />
+    <orderEntry type="library" name="SBT: org.codehaus.jackson:jackson-mapper-asl:1.9.11:jar" level="project" />
+    <orderEntry type="library" name="SBT: org.scala-lang:scala-compiler:2.11.2:jar" level="project" />
+    <orderEntry type="library" name="SBT: org.scala-lang:scala-reflect:2.11.2:jar" level="project" />
+    <orderEntry type="library" name="SBT: org.scala-lang.modules:scala-parser-combinators_2.11:1.0.2:jar" level="project" />
+    <orderEntry type="library" name="SBT: org.scala-lang.modules:scala-xml_2.11:1.0.2:jar" level="project" />
+    <orderEntry type="library" name="SBT: com.github.nscala-time:nscala-time_2.11:1.6.0:jar" level="project" />
+    <orderEntry type="library" name="SBT: joda-time:joda-time:2.5:jar" level="project" />
+    <orderEntry type="library" name="SBT: org.joda:joda-convert:1.2:jar" level="project" />
   </component>
 </module>
