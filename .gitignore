@@ -2,3 +2,4 @@ target/
 oauth.properties
 checkpoint/
 wordcounts/
+.idea/workspace.xml
