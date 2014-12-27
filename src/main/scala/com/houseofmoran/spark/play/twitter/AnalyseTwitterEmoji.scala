@@ -10,8 +10,7 @@ object AnalyseTwitterEmoji {
     val conf = new SparkConf().setAppName("AnalyseTwitter").setMaster("local[*]")
     val sc = new SparkContext(conf)
     val sqlSc = new SQLContext(sc)
-
-    val wordCounts = sqlSc.parquetFiles("wordcounts")
+    import sqlSc._
 
     val schema = StructType(
       StructField("start", TimestampType, false) ::
@@ -19,7 +18,10 @@ object AnalyseTwitterEmoji {
       StructField("word", StringType, false) ::
       StructField("c", LongType, false) :: Nil)
 
-    sqlSc.applySchema(wordCounts, schema).registerTempTable("wordcounts")
+    val wordCounts = sqlSc.applySchema(sqlSc.parquetFiles("wordcounts"), schema)
+
+    val filtered = wordCounts.where('word)((w : String) => w.matches("the.+"))
+    filtered.registerTempTable("wordcounts")
 
     val rows = sqlSc.sql("""
       SELECT word,SUM(c) as c
