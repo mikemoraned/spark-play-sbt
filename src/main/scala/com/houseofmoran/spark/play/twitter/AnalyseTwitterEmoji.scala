@@ -20,7 +20,13 @@ object AnalyseTwitterEmoji {
 
     val wordCounts = sqlSc.applySchema(sqlSc.parquetFiles("wordcounts"), schema)
 
-    val filtered = wordCounts.where('word)((w : String) => w.matches("the.+"))
+    def containsEmoji(w : String) : Boolean = {
+      w.matches(""".+[\x{20a0}-\x{32ff}].+""") ||
+        w.matches(""".+[\x{1f000}-\x{1ffff}].+""") ||
+          w.matches(""".+[\x{fe4e5}-\x{fe4ee}].+""")
+    }
+
+    val filtered = wordCounts.where('word)(containsEmoji)
     filtered.registerTempTable("wordcounts")
 
     val rows = sqlSc.sql("""
