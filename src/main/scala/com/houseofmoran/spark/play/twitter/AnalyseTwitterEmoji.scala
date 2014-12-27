@@ -17,11 +17,18 @@ object AnalyseTwitterEmoji {
       StructField("start", TimestampType, false) ::
       StructField("length", IntegerType, false) ::
       StructField("word", StringType, false) ::
-      StructField("count", IntegerType, false) :: Nil)
+      StructField("c", LongType, false) :: Nil)
 
     sqlSc.applySchema(wordCounts, schema).registerTempTable("wordcounts")
 
-    val rows = sqlSc.sql("SELECT * FROM wordcounts LIMIT 10")
+    val rows = sqlSc.sql("""
+      SELECT word,SUM(c) as c
+      FROM wordcounts
+      GROUP BY word
+      ORDER BY c DESC
+      LIMIT 10
+                         """)
+
     for(row <- rows) {
       println(row.mkString(","))
     }
