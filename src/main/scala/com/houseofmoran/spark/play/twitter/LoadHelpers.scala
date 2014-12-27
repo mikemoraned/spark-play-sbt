@@ -7,12 +7,12 @@ import org.apache.spark.sql.{Row, SQLContext}
 
 class ParquetLoadHelper(sqlContext: SQLContext) {
   def parquetFiles(dirName: String): RDD[Row] = {
-    val allRDDs =
+    val allRDDFileNames =
       for(file <- new File(dirName).listFiles()
           if file.getName().endsWith(".parquet"))
-      yield sqlContext.parquetFile(s"$dirName/${file.getName()}")
+      yield s"$dirName/${file.getName()}"
 
-    return sqlContext.sparkContext.union(allRDDs)
+    return sqlContext.parquetFile(allRDDFileNames.mkString(","))
   }
 }
 
