@@ -18,13 +18,21 @@ object AnalyseTwitterEmoji {
       StructField("word", StringType, false) ::
       StructField("c", LongType, false) :: Nil)
 
-    val wordCounts = sqlSc.applySchema(sqlSc.parquetFiles("wordcounts"), schema)
+//    val wordCountsBare = sqlSc.parquetFiles("wordcounts", "start2014-12-27T16.+\\.parquet")
+    val wordCountsBare = sqlSc.parquetFiles("wordcounts", "start2014-12-27T1[1-6].+\\.parquet")
+    val wordCounts = sqlSc.applySchema(wordCountsBare, schema)
+
+//    def containsEmoji(w : String) : Boolean = {
+//      w.matches(""".+[\x{20a0}-\x{32ff}].+""") ||
+//        w.matches(""".+[\x{1f000}-\x{1ffff}].+""") ||
+//          w.matches(""".+[\x{fe4e5}-\x{fe4ee}].+""")
+//    }
 
     def containsEmoji(w : String) : Boolean = {
-      w.matches(""".+[\x{20a0}-\x{32ff}].+""") ||
-        w.matches(""".+[\x{1f000}-\x{1ffff}].+""") ||
-          w.matches(""".+[\x{fe4e5}-\x{fe4ee}].+""")
-    }
+//            w.matches(""".+[\x{20a0}-\x{32ff}].+""") //||
+              w.matches(""".+[\x{1f000}-\x{1ffff}].+""") //||
+//                w.matches(""".+[\x{fe4e5}-\x{fe4ee}].+""")
+          }
 
     val filtered = wordCounts.where('word)(containsEmoji)
     filtered.registerTempTable("wordcounts")

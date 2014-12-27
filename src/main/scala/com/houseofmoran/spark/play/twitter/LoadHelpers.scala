@@ -1,16 +1,25 @@
 package com.houseofmoran.spark.play.twitter
 
-import java.io.File
+import java.io.{FilenameFilter, File}
 
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.{Row, SQLContext}
 
 class ParquetLoadHelper(sqlContext: SQLContext) {
   def parquetFiles(dirName: String): RDD[Row] = {
+    return parquetFiles(dirName, """.+\.parquet""")
+  }
+
+  def parquetFiles(dirName: String, pattern: String): RDD[Row] = {
+    val filter = new FilenameFilter() {
+      override def accept(dir: File, name: String): Boolean = {
+        return name.matches(pattern)
+      }
+    }
+
     val allRDDFileNames =
-      for(file <- new File(dirName).listFiles()
-          if file.getName().endsWith(".parquet"))
-      yield s"$dirName/${file.getName()}"
+      for(file <- new File(dirName).listFiles(filter))
+        yield s"$dirName/${file.getName()}"
 
     return sqlContext.parquetFile(allRDDFileNames.mkString(","))
   }
