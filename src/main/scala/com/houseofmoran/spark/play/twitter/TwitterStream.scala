@@ -1,36 +1,22 @@
 package com.houseofmoran.spark.play.twitter
 
-import java.io.FileReader
-import java.util.Properties
+import com.github.nscala_time.time.Imports._
+import org.apache.spark._
+import org.apache.spark.sql.SQLContext
+import org.apache.spark.streaming._
 import org.joda.time.DateTime
 import org.joda.time.format.ISODateTimeFormat
-
-import scala.collection.JavaConversions._
-
-import org.apache.spark._
-import org.apache.spark.streaming._
-import StreamingContext._
-import org.apache.spark.streaming.twitter._
-import org.apache.spark.sql.SQLContext
-import com.github.nscala_time.time.Imports._
 
 object TwitterStream {
   def main(args: Array[String]): Unit = {
     val conf = new SparkConf().setAppName("TwitterStream").setMaster("local[*]")
     val sc = new SparkContext(conf)
-    val ssc = new StreamingContext(sc, Seconds(1))
+    implicit val ssc = new StreamingContext(sc, Seconds(1))
     ssc.checkpoint("checkpoint")
     val sqlSc = new SQLContext(sc)
     import sqlSc.createSchemaRDD
 
-    val oauthProperties = new Properties()
-    oauthProperties.load(new FileReader(args(0)))
-    for (key <- oauthProperties.stringPropertyNames()
-         if key.startsWith("twitter4j.oauth.")) {
-         System.setProperty(key, oauthProperties.getProperty(key))
-    }
-
-    val twitterStream = TwitterUtils.createStream(ssc, None)
+    val twitterStream = TwitterStreamSource.streamFromAuthIn(args(0))
 
     val windowLength = Seconds(60)
 
