@@ -7,7 +7,7 @@ import org.apache.spark.streaming._
 import org.joda.time.DateTime
 import org.joda.time.format.ISODateTimeFormat
 
-object TwitterStream {
+object TwitterStreamApp {
   def main(args: Array[String]): Unit = {
     val conf = new SparkConf().setAppName("TwitterStream").setMaster("local[*]")
     val sc = new SparkContext(conf)

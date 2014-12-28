@@ -7,7 +7,7 @@ import org.apache.spark._
 import org.apache.spark.sql.SQLContext
 import org.apache.spark.sql.catalyst.types._
 
-object AnalyseTwitterEmoji {
+object AnalyseTwitterEmojiApp {
   def main(args: Array[String]): Unit = {
     val conf = new SparkConf().setAppName("AnalyseTwitter").setMaster("local[*]")
     val sc = new SparkContext(conf)

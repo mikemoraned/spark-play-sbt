@@ -4,7 +4,7 @@ import com.houseofmoran.spark.play.twitter.LoadHelpers._
 import org.apache.spark._
 import org.apache.spark.sql.SQLContext
 
-object AnalyseTwitter {
+object AnalyseTwitterApp {
   def main(args: Array[String]): Unit = {
     val conf = new SparkConf().setAppName("AnalyseTwitter").setMaster("local[*]")
     val sc = new SparkContext(conf)

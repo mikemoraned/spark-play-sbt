@@ -4,7 +4,7 @@ import org.apache.spark._
 import org.apache.spark.streaming._
 import org.apache.spark.streaming.StreamingContext._
 
-object WordStream {
+object WordStreamApp {
   def main(args: Array[String]) {
     println("Hello Word Count World")
 
