@@ -1,5 +1,7 @@
 package com.houseofmoran.spark.play.twitter
 
+import java.util.regex.Pattern
+
 import com.houseofmoran.spark.play.twitter.LoadHelpers._
 import org.apache.spark._
 import org.apache.spark.sql.SQLContext
@@ -18,35 +20,60 @@ object AnalyseTwitterEmoji {
       StructField("word", StringType, false) ::
       StructField("c", LongType, false) :: Nil)
 
-//    val wordCountsBare = sqlSc.parquetFiles("wordcounts", "start2014-12-27T16.+\\.parquet")
     val wordCountsBare = sqlSc.parquetFiles("wordcounts", "start2014-12-27T1[1-6].+\\.parquet")
     val wordCounts = sqlSc.applySchema(wordCountsBare, schema)
 
-//    def containsEmoji(w : String) : Boolean = {
-//      w.matches(""".+[\x{20a0}-\x{32ff}].+""") ||
-//        w.matches(""".+[\x{1f000}-\x{1ffff}].+""") ||
-//          w.matches(""".+[\x{fe4e5}-\x{fe4ee}].+""")
-//    }
-
+    val emojiRange = """[\x{1f000}-\x{1ffff}]"""
     def containsEmoji(w : String) : Boolean = {
-//            w.matches(""".+[\x{20a0}-\x{32ff}].+""") //||
-              w.matches(""".+[\x{1f000}-\x{1ffff}].+""") //||
-//                w.matches(""".+[\x{fe4e5}-\x{fe4ee}].+""")
-          }
+      w.matches(s".+$emojiRange.+")
+    }
 
     val filtered = wordCounts.where('word)(containsEmoji)
-    filtered.registerTempTable("wordcounts")
+//    filtered.registerTempTable("wordcounts")
 
-    val rows = sqlSc.sql("""
-      SELECT word,SUM(c) as c
-      FROM wordcounts
-      GROUP BY word
-      ORDER BY c DESC
-      LIMIT 10
-                         """)
+    val emojiCounts = filtered.flatMap((row) => {
+      if (row(2) == null) {
+        Seq((null, 0))
+      }
+      else {
+        val word = row.getString(2)
+        val count = row.getLong(3)
 
-    for(row <- rows) {
-      println(row.mkString(","))
-    }
+        val regex = s"($emojiRange)".r
+        val emoji = (for(regex(e) <- regex.findAllIn(word)) yield e).toTraversable
+        val emojiCounts = emoji.
+          groupBy((s: String) => s).
+          map((group) => (group._1, group._2.toList.length * count))
+
+        emojiCounts
+      }
+    })
+
+    println(emojiCounts.takeSample(false, 100).mkString("\n"))
+
+//    val emojiSql = sqlSc.applySchema(emojiCounts, StructType(
+//        StructField("emoji", StringType, true) ::
+//        StructField("c", LongType, false) :: Nil))
+//    emojiSql.registerTempTable("emojicounts")
+//
+//    val rows = sqlSc.sql("""
+//      SELECT emoji,SUM(c) as c
+//      FROM emojicounts
+//      GROUP BY emoji
+//      ORDER BY c DESC
+//      LIMIT 20
+//                         """)
+
+//    val rows = sqlSc.sql("""
+//      SELECT word,SUM(c) as c
+//      FROM wordcounts
+//      GROUP BY word
+//      ORDER BY c DESC
+//      LIMIT 10
+//                         """)
+
+//    for(row <- rows) {
+//      println(row.mkString(","))
+//    }
   }
 }
