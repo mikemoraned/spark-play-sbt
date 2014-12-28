@@ -24,7 +24,7 @@ object TwitterEmojiStreamApp {
     val emojiCountStream = emojiStream.countByValueAndWindow(windowLength, windowLength)
 
     emojiCountStream.foreachRDD( emojiCountRDD => {
-      emojiCountRDD.collect().foreach(println)
+//      emojiCountRDD.collect().foreach(println)
 
       val now = DateTime.now.toDateTimeISO
 
