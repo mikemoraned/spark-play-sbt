@@ -20,7 +20,7 @@ object TwitterEmojiStreamApp {
 
     val windowLength = Seconds(60)
 
-    val emojiStream = twitterStream.flatMap(status => Emoji.findEmoji(status.getText))
+    val emojiStream = twitterStream.flatMap(status => TwitterWordUsage.mapWordsToEmoji(status.getText))
     val emojiCountStream = emojiStream.countByValueAndWindow(windowLength, windowLength)
 
     emojiCountStream.foreachRDD( emojiCountRDD => {
@@ -30,7 +30,7 @@ object TwitterEmojiStreamApp {
 
       emojiCountRDD.
         map( emojiCount => (now.toInstant().millis, windowLength.milliseconds, emojiCount._1, emojiCount._2)).
-        saveAsParquetFile(s"emojicounts/start${ISODateTimeFormat.dateTime().print(now)}_window${windowLength.milliseconds}ms.parquet")
+        saveAsParquetFile(s"emojiusage/start${ISODateTimeFormat.dateTime().print(now)}_window${windowLength.milliseconds}ms.parquet")
     });
 
     ssc.start()
