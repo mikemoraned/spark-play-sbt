@@ -31,5 +31,29 @@ object AnalyseTwitterEmojiApp {
     for(entry <- wordCounts.sortBy({ case (_, count) => count }, false).take(10)) {
       println(entry)
     }
+
+    val wordFirst = rolledUp.map{ case ((word, emoji), count) => (word, (emoji, count))}
+    val joined = wordCounts.join(wordFirst)
+
+    for(entry <- joined.takeSample(false, 10)) {
+      println(entry)
+    }
+
+    val inContext = joined.map{ case (word, (overallCount, (emoji, emojiCount))) => {
+      ((word, emoji), (emojiCount, overallCount))
+    }}
+
+    for(entry <- inContext.sortBy({ case (_, (e, o)) => e.toFloat / o.toFloat }, false).take(10)) {
+      println(entry)
+    }
+
+    val withoutLowValues = inContext.filter{ case (_, (emojiCount, overallCount)) => {
+      emojiCount > 10 && overallCount > 10
+    }}
+
+    for(entry <- withoutLowValues.sortBy({ case (_, (e, o)) => e.toFloat / o.toFloat }, false).take(10)) {
+      println(entry)
+    }
+
   }
 }
