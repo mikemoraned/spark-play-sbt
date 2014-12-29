@@ -1,9 +1,9 @@
 package com.houseofmoran.spark.play.twitter
 
 import com.houseofmoran.spark.play.twitter.LoadHelpers._
+import org.apache.spark.SparkContext._
 import org.apache.spark._
-import org.apache.spark.sql._
-import org.apache.spark.sql.{SchemaRDD, Row, SQLContext}
+import org.apache.spark.sql.{Row, SQLContext}
 
 object AnalyseTwitterEmojiApp {
   def main(args: Array[String]): Unit = {
@@ -20,9 +20,10 @@ object AnalyseTwitterEmojiApp {
 
       ((wordEmojiPairStruct.getString(0), Emoji(wordEmojiPairStruct.getAs[Row](1).getString(0))), count)
     })
+    val rolledUp = mapped.reduceByKey(_ + _).sortBy({ case (_, count) => count }, false)
 
-    for(row <- mapped.takeSample(false, 100)) {
-      println(row)
+    for(entry <- rolledUp.take(100)) {
+      println(entry)
     }
   }
 }
