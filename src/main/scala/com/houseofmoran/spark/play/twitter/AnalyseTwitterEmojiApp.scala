@@ -22,7 +22,13 @@ object AnalyseTwitterEmojiApp {
     })
     val rolledUp = mapped.reduceByKey(_ + _).sortBy({ case (_, count) => count }, false)
 
-    for(entry <- rolledUp.take(100)) {
+    for(entry <- rolledUp.sortBy({ case (_, count) => count }, false).take(10)) {
+      println(entry)
+    }
+
+    val wordCounts = rolledUp.map{ case ((word, emoji), count) => (word, count)}.reduceByKey(_ + _)
+
+    for(entry <- wordCounts.sortBy({ case (_, count) => count }, false).take(10)) {
       println(entry)
     }
   }
