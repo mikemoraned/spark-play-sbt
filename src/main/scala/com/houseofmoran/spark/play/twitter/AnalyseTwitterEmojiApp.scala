@@ -55,5 +55,12 @@ object AnalyseTwitterEmojiApp {
       println(entry)
     }
 
+    val withoutEmojiInWords = withoutLowValues.filter{ case ((word, _), _) => {
+      Emoji.findEmoji(word).isEmpty
+    }}
+
+    for(entry <- withoutEmojiInWords.sortBy({ case (_, (e, o)) => e.toFloat / o.toFloat }, false).take(10)) {
+      println(entry)
+    }
   }
 }
