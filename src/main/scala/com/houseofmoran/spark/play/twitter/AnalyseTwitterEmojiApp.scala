@@ -22,12 +22,14 @@ object AnalyseTwitterEmojiApp {
     })
     val rolledUp = mapped.reduceByKey(_ + _).sortBy({ case (_, count) => count }, false)
 
+    println("Rolled up")
     for(entry <- rolledUp.sortBy({ case (_, count) => count }, false).take(10)) {
       println(entry)
     }
 
     val wordCounts = rolledUp.map{ case ((word, emoji), count) => (word, count)}.reduceByKey(_ + _)
 
+    println("Overall word counts")
     for(entry <- wordCounts.sortBy({ case (_, count) => count }, false).take(10)) {
       println(entry)
     }
@@ -35,6 +37,7 @@ object AnalyseTwitterEmojiApp {
     val wordFirst = rolledUp.map{ case ((word, emoji), count) => (word, (emoji, count))}
     val joined = wordCounts.join(wordFirst)
 
+    println("Joined with emoji counts again")
     for(entry <- joined.takeSample(false, 10)) {
       println(entry)
     }
@@ -43,6 +46,7 @@ object AnalyseTwitterEmojiApp {
       ((word, emoji), (emojiCount, overallCount))
     }}
 
+    println("Re-ordered tuples")
     for(entry <- inContext.sortBy({ case (_, (e, o)) => e.toFloat / o.toFloat }, false).take(10)) {
       println(entry)
     }
@@ -51,6 +55,7 @@ object AnalyseTwitterEmojiApp {
       emojiCount > 10 && overallCount > 10
     }}
 
+    println("Without low counts")
     for(entry <- withoutLowValues.sortBy({ case (_, (e, o)) => e.toFloat / o.toFloat }, false).take(10)) {
       println(entry)
     }
@@ -59,6 +64,7 @@ object AnalyseTwitterEmojiApp {
       Emoji.findEmoji(word).isEmpty
     }}
 
+    println("Without emoji in words")
     for(entry <- withoutEmojiInWords.sortBy({ case (_, (e, o)) => e.toFloat / o.toFloat }, false).take(10)) {
       println(entry)
     }
