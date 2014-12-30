@@ -6,3 +6,4 @@ wordcounts/
 .idea/dictionaries/
 emojicounts/
 emojiusage/
+firehose-geo-oauth.properties
