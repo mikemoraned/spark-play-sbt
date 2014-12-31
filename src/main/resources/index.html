@@ -57,14 +57,15 @@
                 .attr("d", path(land))
                 .classed("land", true);
 
-        (function transition() {
+        function showTweets(tweets) {
+            console.log("tweets", tweets);
             d3.transition()
-                    .duration(1250)
-                    .each("start", function() {
+                    .duration(2000)
+                    .each("start", function () {
                         console.log("start");
                         d3.select(".bounds").remove();
                     })
-                    .tween("rotate", function() {
+                    .tween("rotate", function () {
                         console.log("rotate");
                         var i = Math.floor(Math.random() * (countries.length - 1));
                         var country = countries[i];
@@ -84,7 +85,7 @@
 
                         console.log("poly", boundsPolygon);
 
-                        return function(t) {
+                        return function (t) {
                             projection.rotate(r(t));
                             d3.select(".graticule").attr("d", path);
                             d3.select(".land").attr("d", path(land));
@@ -94,9 +95,18 @@
                                     .classed("bounds", true);
                         };
                     })
-                    .transition()
-                    .each("end", transition);
-        })();
+                    .transition();
+        };
+
+        function fetchTweetSample() {
+            d3.xhr("/api/sample").get(function(e, result) {
+                if (!e) {
+                    showTweets(result.response);
+                }
+            })
+        }
+
+        setInterval(fetchTweetSample, 2000);
     })
 </script>
 </body>
