@@ -36,8 +36,9 @@
 
     d3.json("world110.json", function(err, world) {
         console.log("data", world)
-        var countries = topojson.feature(world, world.objects.land);
-        console.log("countries", countries)
+        var land = topojson.feature(world, world.objects.land);
+        var countries = topojson.feature(world, world.objects.countries).features;
+        console.log("countries", land)
 
         var svg = d3.select("svg");
         var path = d3.geo.path()
@@ -48,8 +49,29 @@
                 .attr("class", "graticule")
                 .attr("d", path);
         svg.append("path")
-                .attr("d", path(countries))
+                .attr("d", path(land))
                 .classed("land", true);
+
+        (function transition() {
+            d3.transition()
+                    .duration(1250)
+                    .each("start", function() {
+                        console.log("start");
+                    })
+                    .tween("rotate", function() {
+                        console.log("rotate");
+                        var i = Math.floor(Math.random() * (countries.length - 1));
+                        var p = d3.geo.centroid(countries[i]),
+                                r = d3.interpolate(projection.rotate(), [-p[0], -p[1]]);
+                        return function(t) {
+                            projection.rotate(r(t));
+                            d3.select(".graticule").attr("d", path)
+                            d3.select(".land").attr("d", path(land));
+                        };
+                    })
+                    .transition()
+                    .each("end", transition);
+        })();
     })
 </script>
 </body>
