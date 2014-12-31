@@ -3,15 +3,48 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title></title>
+    <style>
+        .graticule {
+            fill: none;
+            stroke: #777;
+            stroke-opacity: .5;
+            stroke-width: .5px;
+        }
+    </style>
 </head>
 <body>
+
+<svg width="100%" height="800">
+</svg>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.min.js" charset="utf-8"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
 <script>
+    var width = 840;
+    var height = 800;
+    var projection = d3.geo.orthographic()
+//var projection = d3.geo.albers()
+//var projection = d3.geo.mercator()
+            .scale(170)
+            .rotate([100,0,0])
+            .translate([width/2, height/2])
+            .clipAngle(90);
+
     d3.json("world110.json", function(err, world) {
         console.log("data", world)
         var countries = topojson.feature(world, world.objects.land);
         console.log("countries", countries)
+
+        var svg = d3.select("svg");
+        var path = d3.geo.path()
+                .projection(projection);
+        var graticule = d3.geo.graticule()
+        svg.append("path")
+                .datum(graticule)
+                .attr("class", "graticule")
+                .attr("d", path);
+        svg.append("path")
+                .attr("d", path(countries))
+                .classed("land", true);
     })
 </script>
 </body>
