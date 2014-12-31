@@ -15,6 +15,11 @@
             stroke-opacity: .5;
             stroke-width: .5px;
         }
+
+        .bounds {
+            fill: red;
+            stroke: #777;
+        }
     </style>
 </head>
 <body>
@@ -57,16 +62,36 @@
                     .duration(1250)
                     .each("start", function() {
                         console.log("start");
+                        d3.select(".bounds").remove();
                     })
                     .tween("rotate", function() {
                         console.log("rotate");
                         var i = Math.floor(Math.random() * (countries.length - 1));
-                        var p = d3.geo.centroid(countries[i]),
+                        var country = countries[i];
+
+                        var b = d3.geo.bounds(country);
+                        var boundsPolygon = {
+                            type: "Feature",
+                            geometry: {
+                                type: "Polygon",
+                                properties: {},
+                                coordinates: [[b[0], [b[0][0], b[1][1]], b[1], [b[1][0], b[0][1]], b[0]]]
+                            }
+                        };
+
+                        var p = d3.geo.centroid(boundsPolygon),
                                 r = d3.interpolate(projection.rotate(), [-p[0], -p[1]]);
+
+                        console.log("poly", boundsPolygon);
+
                         return function(t) {
                             projection.rotate(r(t));
-                            d3.select(".graticule").attr("d", path)
+                            d3.select(".graticule").attr("d", path);
                             d3.select(".land").attr("d", path(land));
+                            d3.select(".bounds").remove();
+                            svg.append("path")
+                                    .attr("d", path(boundsPolygon))
+                                    .classed("bounds", true);
                         };
                     })
                     .transition()
