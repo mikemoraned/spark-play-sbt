@@ -20,8 +20,9 @@ case class TweetSample() {
 
   def summarise(writer: PrintWriter): Unit = {
     for (sample <- possibleSample) {
-      for(status <- sample) {
-        writer.println(s"<p>$status</p>")
+      for(status <- sample if status.getGeoLocation() != null) {
+        val location = status.getGeoLocation
+        writer.println(s"{ id=${status.getId}, location=[${location.getLatitude}, ${location.getLongitude}] }")
       }
     }
   }
@@ -35,10 +36,11 @@ class TweetSampleHandler(sample: TweetSample) extends AbstractHandler {
   override def handle(target: String, baseRequest: Request,
                       request: HttpServletRequest, response: HttpServletResponse): Unit =
   {
-    response.setContentType("text/html; charset=utf-8")
+    response.setContentType("application/json; charset=utf-8")
     response.setStatus(HttpServletResponse.SC_OK)
-    response.getWriter().println("<h1>Hello World</h1>")
+    response.getWriter().println("[")
     sample.summarise(response.getWriter)
+    response.getWriter().println("]")
     baseRequest.setHandled(true);
   }
 }
