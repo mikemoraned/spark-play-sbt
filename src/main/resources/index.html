@@ -59,6 +59,15 @@
 
         function showTweets(tweets) {
             console.log("tweets", tweets);
+
+            var circle = d3.geo.circle();
+
+            var tweetsAsCircles = tweets.map(function(tweet) {
+                return circle.origin(tweet.location);
+            });
+
+            console.dir(tweetsAsCircles);
+
             d3.transition()
                     .duration(2000)
                     .each("start", function () {
@@ -99,9 +108,13 @@
         };
 
         function fetchTweetSample() {
-            d3.xhr("/api/sample").get(function(e, result) {
-                if (!e) {
-                    showTweets(result.response);
+            d3.json("/api/sample", function(e, json) {
+                if (e) {
+                    console.dir(e);
+                }
+                else
+                {
+                    showTweets(json);
                 }
             })
         }
