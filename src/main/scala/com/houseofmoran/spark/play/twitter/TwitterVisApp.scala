@@ -21,7 +21,8 @@ case class TweetSample() {
   def summarise(writer: PrintWriter): Unit = {
     for (sample <- possibleSample) {
       val entries = for(status <- sample if status.getGeoLocation() != null)
-        yield "{ \"id\" : \"" + status.getId + "\", \"location\" : [" + status.getGeoLocation.getLatitude + ", " + status.getGeoLocation.getLongitude + "] }"
+        yield "{ \"id\" : \"" + status.getId + "\", \"location\" :" +
+          " { \"lat\": " + status.getGeoLocation.getLatitude + ", \"lon\": " + status.getGeoLocation.getLongitude + "} }"
 
       writer.println(entries.mkString(",\n"))
     }
